@@ -56,7 +56,7 @@ class test_add_group(unittest.TestCase):
 
     def test_add_group(self):
         wd = self.wd
-        self.open_home_page(wd)
+        self.open_start_page(wd)
         self.login(wd, login="admin", password="secret")
         self.open_groups_page(wd)
         self.create_group(wd, Group(name="group_name1", header="group_header1", footer="group_footer1"))
@@ -65,7 +65,7 @@ class test_add_group(unittest.TestCase):
 
     def test_add_empty_group(self):
         wd = self.wd
-        self.open_home_page(wd)
+        self.open_start_page(wd)
         self.login(wd, login="admin", password="secret")
         self.open_groups_page(wd)
         self.create_group(wd, Group(name="", header="", footer=""))
