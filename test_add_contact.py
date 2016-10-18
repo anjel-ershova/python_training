@@ -122,7 +122,6 @@ class test_add_contact(unittest.TestCase):
         wd.find_element_by_link_text("Logout").click()
 
     def test_add_contact(self):
-        success = True
         wd = self.wd
         self.open_start_page(wd)
         self.login(wd, login='admin', password='secret')
