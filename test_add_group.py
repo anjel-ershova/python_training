@@ -17,8 +17,8 @@ class test_add_group(unittest.TestCase):
         self.wd = WebDriver()
         self.wd.implicitly_wait(60)
 
-    def open_home_page(self, wd):
-        wd.get("http://localhost/addressbook/group.php")
+    def open_start_page(self, wd):
+        wd.get("http://localhost/addressbook/")
 
     def login(self, wd, login, password):
         wd.find_element_by_name("user").click()
