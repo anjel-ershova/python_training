@@ -124,7 +124,7 @@ class test_add_contact(unittest.TestCase):
     def test_add_contact(self):
         success = True
         wd = self.wd
-        self.open_home_page(wd)
+        self.open_start_page(wd)
         self.login(wd, login='admin', password='secret')
         self.open_contacts_page(wd)
         self.fill_contact_data(wd, General(), Telephone(), Email(email='email@mfsa.ru', email2='email2@mfsa.ru', email3='email3@mfsa.ru'), Secondary())
