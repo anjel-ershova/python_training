@@ -19,10 +19,10 @@ class test_add_contact(unittest.TestCase):
         self.wd = WebDriver()
         self.wd.implicitly_wait(60)
 
-    def open_start_page(self, wd):
-        wd.get("http://localhost/addressbook/")
-
     def login(self, wd, login, password):
+        #open_start_page
+        wd.get("http://localhost/addressbook/")
+        #authorisation
         wd.find_element_by_name("user").click()
         wd.find_element_by_name("user").clear()
         wd.find_element_by_name("user").send_keys(login)
@@ -31,10 +31,9 @@ class test_add_contact(unittest.TestCase):
         wd.find_element_by_name("pass").send_keys(password)
         wd.find_element_by_xpath("//form[@id='LoginForm']/input[3]").click()
 
-    def open_contacts_page(self, wd):
+    def create_contact(self, wd, general, telephone, email, secondary):
+        #open_contacts_page
         wd.find_element_by_link_text("add new").click()
-
-    def fill_contact_data(self, wd, general, telephone, email, secondary):
         # заполнение первого блока - General, переменные имеют заданное дефолтное значение
         wd.find_element_by_name("firstname").click()
         wd.find_element_by_name("firstname").clear()
@@ -111,11 +110,9 @@ class test_add_contact(unittest.TestCase):
         wd.find_element_by_name("notes").click()
         wd.find_element_by_name("notes").clear()
         wd.find_element_by_name("notes").send_keys(secondary.notes)
-
-    def save_contact(self, wd):
+        #save_contact
         wd.find_element_by_name("submit").click()
-
-    def return_to_home_page(self, wd):
+        #return_to_home_page
         wd.find_element_by_link_text("home").click()
 
     def logout(self, wd):
@@ -123,12 +120,8 @@ class test_add_contact(unittest.TestCase):
 
     def test_add_contact(self):
         wd = self.wd
-        self.open_start_page(wd)
         self.login(wd, login='admin', password='secret')
-        self.open_contacts_page(wd)
-        self.fill_contact_data(wd, General(), Telephone(), Email(email='email@mfsa.ru', email2='email2@mfsa.ru', email3='email3@mfsa.ru'), Secondary())
-        self.save_contact(wd)
-        self.return_to_home_page(wd)
+        self.create_contact(wd, General(), Telephone(), Email(email='email@mfsa.ru', email2='email2@mfsa.ru', email3='email3@mfsa.ru'), Secondary())
         self.logout(wd)
 
     def tearDown(self):
