@@ -2,11 +2,11 @@ from selenium.webdriver.support.ui import Select
 
 
 class ContactHelper:
-    def __init__(self, app):
-        self.app = app
+    def __init__(self, app4):
+        self.app5 = app4
 
     def create(self, general, telephone, email, secondary):
-        wd = self.app.wd
+        wd = self.app5.wd
         # open_contacts_page
         wd.find_element_by_link_text("add new").click()
         # заполнение первого блока - General, переменные имеют заданное дефолтное значение
