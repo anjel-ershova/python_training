@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
 import pytest
-from contacts import General
-from contacts import Telephone
-from contacts import Email
-from contacts import Secondary
-from application import *
+
+from fixture.application import *
+from model.contacts import Email
+from model.contacts import General
+from model.contacts import Secondary
+from model.contacts import Telephone
+
 
 @pytest.fixture
 def app(request):
