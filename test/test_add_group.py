@@ -1,9 +1,6 @@
 # -*- coding: utf-8 -*-
-import unittest
-
 import pytest
-
-from fixture.application import *
+from fixture.application import Application
 from model.group import Group
 
 
@@ -16,14 +13,10 @@ def app(request):
 
 def test_add_group(app):
     app.session.login(login="admin", password="secret")
-    app.create_group(Group(name="group_name1", header="group_header1", footer="group_footer1"))
+    app.group.create(Group(name="group_name1", footer="group_footer1", header="group_header1"))
     app.session.logout()
-
 
 def test_add_empty_group(app):
     app.session.login(login="admin", password="secret")
-    app.create_group(Group(name="", header="", footer=""))
+    app.group.create(Group(name="", header="", footer=""))
     app.session.logout()
-
-if __name__ == '__main__':
-    unittest.main()

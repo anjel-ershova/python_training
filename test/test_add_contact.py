@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import pytest
 
-from fixture.application import *
+from fixture.application import Application
 from model.contacts import Email
 from model.contacts import General
 from model.contacts import Secondary
@@ -16,5 +16,5 @@ def app(request):
 
 def test_add_contact(app):
     app.session.login(login='admin', password='secret')
-    app.create_contact(General(), Telephone(), Email(email='email@mfsa.ru', email2='email2@mfsa.ru', email3='email3@mfsa.ru'), Secondary())
+    app.contact.create(General(), Telephone(), Email(email='email@mfsa.ru', email2='email2@mfsa.ru', email3='email3@mfsa.ru'), Secondary())
     app.session.logout()
