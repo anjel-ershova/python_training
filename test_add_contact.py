@@ -4,7 +4,6 @@ from contacts import General
 from contacts import Telephone
 from contacts import Email
 from contacts import Secondary
-#from contacts import Date
 from application import *
 
 @pytest.fixture
