@@ -15,6 +15,6 @@ def app(request):
     return fixture
 
 def test_add_contact(app):
-    app.login(login='admin', password='secret')
+    app.session.login(login='admin', password='secret')
     app.create_contact(General(), Telephone(), Email(email='email@mfsa.ru', email2='email2@mfsa.ru', email3='email3@mfsa.ru'), Secondary())
-    app.logout()
+    app.session.logout()
