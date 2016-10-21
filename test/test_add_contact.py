@@ -1,6 +1,4 @@
 # -*- coding: utf-8 -*-
-import pytest
-
 from model.contacts import Email
 from model.contacts import General
 from model.contacts import Secondary

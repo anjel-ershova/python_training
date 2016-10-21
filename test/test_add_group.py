@@ -10,3 +10,4 @@ def test_add_empty_group(app2):
     app2.session.login(login="admin", password="secret")
     app2.group.create(Group(name="", header="", footer=""))
     app2.session.logout()
+

@@ -86,6 +86,22 @@ class ContactHelper:
         # return_to_home_page
         wd.find_element_by_link_text("home").click()
 
+    def edit_first_contact(self, general):
+        wd = self.app.wd
+        # open home page
+        wd.find_element_by_link_text("home").click()
+        # select first contact
+        wd.find_element_by_name("selected[]").click()
+        # click edit icon
+        wd.find_element_by_xpath("//table[@id='maintable']/tbody/tr[2]/td[8]/a/img").click()
+        # fill forms with new params
+        # заполнение первого блока - General, новые значения заданы в тесте
+        wd.find_element_by_name("firstname").click()
+        wd.find_element_by_name("firstname").clear()
+        wd.find_element_by_name("firstname").send_keys(general.firstname)
+        # submit edition
+        wd.find_element_by_name("update").click()
+
     def delete_first_contact(self):
         wd = self.app.wd
         # open home page
