@@ -39,6 +39,7 @@ class GroupHelper:
         # select first group
         wd.find_element_by_name("selected[]").click()
         # click edit button
+        wd.find_element_by_name("edit").click()
         # fill forms with new params
         wd.find_element_by_name("group_name").click()
         wd.find_element_by_name("group_name").clear()
