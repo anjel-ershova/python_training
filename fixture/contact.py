@@ -1,13 +1,12 @@
 from selenium.webdriver.support.ui import Select
 
-
 class ContactHelper:
-    def __init__(self, app4):
-        self.app5 = app4
+    def __init__(self, app):
+        self.app = app
 
     def create(self, general, telephone, email, secondary):
-        wd = self.app5.wd
-        # open_contacts_page
+        wd = self.app.wd
+        # open_contact_creation_page
         wd.find_element_by_link_text("add new").click()
         # заполнение первого блока - General, переменные имеют заданное дефолтное значение
         wd.find_element_by_name("firstname").click()
@@ -86,3 +85,13 @@ class ContactHelper:
         wd.find_element_by_name("submit").click()
         # return_to_home_page
         wd.find_element_by_link_text("home").click()
+
+    def delete_first_contact(self):
+        wd = self.app.wd
+        # open home page
+        wd.find_element_by_link_text("home").click()
+        # select first contact
+        wd.find_element_by_name("selected[]").click()
+        # submit deletion
+        wd.find_element_by_xpath("//div[@id='content']/form[2]/div[2]/input").click()
+        wd.switch_to_alert().accept()

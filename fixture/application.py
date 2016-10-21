@@ -2,6 +2,7 @@ from selenium.webdriver.firefox.webdriver import WebDriver
 from fixture.session import SessionHelper
 from fixture.contact import ContactHelper
 from fixture.group import GroupHelper
+from fixture.navigation import NavigationHelper
 
 
 class Application:
@@ -11,6 +12,7 @@ class Application:
         self.session = SessionHelper(self)
         self.contact = ContactHelper(self)
         self.group = GroupHelper(self)
+        self.navigation = NavigationHelper(self)
 
     def destroy(self):
         self.wd.quit()
