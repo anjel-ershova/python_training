@@ -21,8 +21,7 @@ class ContactHelper:
         wd.find_element_by_name("nickname").click()
         wd.find_element_by_name("nickname").clear()
         wd.find_element_by_name("nickname").send_keys(general.nickname)
-        wd.find_element_by_name("photo").send_keys("C:\fun\learn\Python\SoftwareTesting\занятие1\окружение.png")
-        # картинка выбирается, но при просмотре созданного контакта не отображается
+        wd.find_element_by_name("photo").send_keys("C:\\fun\\learn\\Python\\SoftwareTesting\\занятие1\\окружение.png")
         wd.find_element_by_name("title").click()
         wd.find_element_by_name("title").clear()
         wd.find_element_by_name("title").send_keys(general.title)
