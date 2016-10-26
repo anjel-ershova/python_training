@@ -9,3 +9,11 @@ class NavigationHelper:
     def open_next_birthdays_page(self):
         wd = self.app.wd
         wd.find_element_by_link_text("next birthdays").click()
+
+    def open_contact_creation_page(self):
+        wd = self.app.wd
+        wd.find_element_by_link_text("add new").click()
+
+    def open_groups_page(self):
+        wd = self.app.wd
+        wd.find_element_by_link_text("groups").click()

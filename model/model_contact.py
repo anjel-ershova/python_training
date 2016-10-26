@@ -1,6 +1,6 @@
 class General:
-    def __init__(self, firstname="firstname", middlename="middlename", lastname="lastname", nickname="nickname", title="title",
-                 company="company", address="address"):
+    def __init__(self, firstname=None, middlename=None, lastname=None, nickname=None, title=None,
+                 company=None, address=None):
         self.firstname = firstname
         self.middlename = middlename
         self.lastname = lastname
@@ -10,7 +10,7 @@ class General:
         self.address = address
 
 class Telephone:
-    def __init__(self, home='555-5678', mobile='8-800-200-555-500', work='555-work', fax='812-123-23-34'):
+    def __init__(self, home=None, mobile=None, work=None, fax=None):
         self.home = home
         self.mobile = mobile
         self.work = work
@@ -23,7 +23,7 @@ class Email:
         self.email3 = email3
 
 class Secondary:
-    def __init__(self, address2='Another address', home='home_secondary', notes='Some text'):
+    def __init__(self, address2=None, home=None, notes=None):
         self.address2 = address2
         self.home = home
         self.notes = notes
