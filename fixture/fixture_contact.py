@@ -1,4 +1,6 @@
 from selenium.webdriver.support.ui import Select
+from random import randint
+from random import choice
 
 class ContactHelper:
     def __init__(self, app):
@@ -21,6 +23,15 @@ class ContactHelper:
         wd.find_element_by_name("submit").click()
         # return_to_home_page
         self.app.navigation.open_home_page()
+
+    def fill_calendar (self, day, month, year):
+        # для дат (число, год) используем randint, как сделать случайный месяц - пока не ясно
+        wd = self.app.wd
+        wd.find_element_by_name(day).send_keys(randint(1, 30))
+        select = Select(wd.find_element_by_name(month))
+        select.select_by_visible_text('January')
+        wd.find_element_by_name(year).send_keys(randint(1920,2017))
+
 
     def fill_contact_form(self, general, telephone, email, secondary):
         wd = self.app.wd
@@ -45,29 +56,21 @@ class ContactHelper:
         self.edit_if_not_none("email3", email.email3)
         # заполнение сайта, используется метод fill_contact_form
         self.edit_if_not_none("homepage", "https://google.ru")
-        # заполняем дату рождения и годовщину
-        select = Select(wd.find_element_by_name("bday"))
-        select.select_by_visible_text('9')
-        select = Select(wd.find_element_by_name("bmonth"))
-        select.select_by_visible_text('March')
-        wd.find_element_by_name("byear").send_keys("9999")
-        select = Select(wd.find_element_by_name("aday"))
-        select.select_by_visible_text('1')
-        select = Select(wd.find_element_by_name("amonth"))
-        select.select_by_visible_text('November')
-        wd.find_element_by_name("ayear").send_keys("8888")
+        # заполняем дату рождения и годовщину, используем отдельный метод fill_calendar
+        self.fill_calendar(day='bday', month='bmonth', year='byear')
+        self.fill_calendar(day='aday', month='amonth', year='ayear')
         # заполнение Secondary, переменные имеют заданное дефолтное значение
         self.edit_if_not_none("address2", secondary.address2)
         self.edit_if_not_none("phone2", secondary.home)
         self.edit_if_not_none("notes", secondary.notes)
 
-    def edit_first_contact(self, new_group_data):
+    def edit_first_contact(self, field, text1):
         wd = self.app.wd
         self.app.navigation.open_home_page()
         self.select_first_contact()
         # click edit icon
         wd.find_element_by_xpath("//table[@id='maintable']/tbody/tr[2]/td[8]/a/img").click()
-        self.edit_if_not_none(new_group_data,)
+        self.edit_if_not_none(field, text1)
         # submit edition
         wd.find_element_by_name("update").click()
 

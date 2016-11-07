@@ -8,11 +8,19 @@ from fixture.navigation import NavigationHelper
 class Application:
     def __init__(self):
         self.wd = WebDriver()
-        self.wd.implicitly_wait(60)
+        # пока оставлю implicitly_wait(5), потом поменяю на 60
+        self.wd.implicitly_wait(5)
         self.session = SessionHelper(self)
         self.contact = ContactHelper(self)
         self.group = GroupHelper(self)
         self.navigation = NavigationHelper(self)
+
+    def is_valid(self):
+        try:
+           self.wd.current_url
+           return True
+        except:
+            return False
 
     def destroy(self):
         self.wd.quit()

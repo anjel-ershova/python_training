@@ -17,7 +17,7 @@ class Telephone:
         self.fax = fax
 
 class Email:
-    def __init__(self, email, email2, email3):
+    def __init__(self, email=None, email2=None, email3=None):
         self.email = email
         self.email2 = email2
         self.email3 = email3
