@@ -75,7 +75,7 @@ class ContactHelper:
         wd.find_element_by_name("update").click()
 
     def open_to_edit(self):
-        #потом удалить
+        # удалить, когда полностью разберусь с датами, в т.ч. в методе test_edit_contact_dates()
         wd = self.app.wd
         self.app.navigation.open_home_page()
         self.select_first_contact()
@@ -83,7 +83,7 @@ class ContactHelper:
         wd.find_element_by_xpath("//table[@id='maintable']/tbody/tr[2]/td[8]/a/img").click()
 
     def click_to_submit(self):
-        #потом удалить
+        # удалить, когда полностью разберусь с датами, в т.ч. в методе test_edit_contact_dates()
         wd = self.app.wd
         wd.find_element_by_name("update").click()
 
