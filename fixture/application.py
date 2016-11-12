@@ -13,6 +13,7 @@ class Application:
         self.group = GroupHelper(self)
         self.navigation = NavigationHelper(self)
 
+    # метод, проверяющий, валидна ли фикстура
     def is_valid(self):
         try:
            self.wd.current_url
