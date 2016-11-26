@@ -114,14 +114,12 @@ class ContactHelper:
         contacts_list = []
         wd.find_elements_by_name("entry")
         for element in wd.find_elements_by_name("entry"):
-            #firstname = element.find_element_by_name("selected[]").get_attribute("title")
-            #id = element.find_element_by_name("selected[]").get_attribute("value")
             # нашли все переменные в строке
             all_cells = element.find_elements_by_tag_name("td")
             # забираем содержимое ячеек 2 и 3 в локальные вырезки
-            firstname_cell = all_cells[1]
-            lastname_cell = all_cells[2]
-            #id_cell = all_cells[0] - не сработало
+            firstname_cell = all_cells[2]
+            lastname_cell = all_cells[1]
+            #id_cell = all_cells[0]
             # теперь получаем именно текст из вырезок
             firstname1 = firstname_cell.text
             lastname1 = lastname_cell.text

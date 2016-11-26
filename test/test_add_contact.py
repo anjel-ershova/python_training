@@ -8,7 +8,7 @@ def test_add_contact(app2):
     # собираем старый список контактов
     old_contacts = app2.contact.get_contact_list()
     # выносим general в локальную переменную
-    contact_general = General(firstname="firstname12121211212121", middlename="middlename", lastname="lastname", nickname="nickname", title="title",
+    contact_general = General(firstname="firstname", middlename="middlename", lastname="lastname", nickname="nickname", title="title",
                  company="company", address="address")
     # выносим список телефонов в локальную переменную
     contact_telephone = Telephone(home='555-5678', mobile='8-800-200-555-500', work='555-work', fax='812-123-23-34')
@@ -23,10 +23,10 @@ def test_add_contact(app2):
     # сравниваем старый и новый списки по длине, новый == старый +1
     assert len(old_contacts) + 1 == len(new_contacts)
     #добавляем в старый список данные от нового созданного контакта (из локальных переменных)
-    old_contacts.append(General(firstname="", middlename="None", lastname="", nickname="None", title="None",
-                 company="None", address="None", id=id))
+    old_contacts.append(contact_general)
     # сравниваем 2 полученных списка: новый и старый с добавленным контактом
     # для того, чтобы их можно было сравнивать в model_contacts надо добавить 2 метода: __eq__ и id_or_max
+    return old_contacts
     assert sorted(old_contacts, key=General.id_or_max) == sorted(new_contacts, key=General.id_or_max)
 
 #def test_add_empty_contact(app2):
