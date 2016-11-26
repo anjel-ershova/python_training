@@ -1,6 +1,8 @@
 from selenium.webdriver.support.ui import Select
 from random import randint
 from random import choice
+from model.model_contact import *
+
 
 class ContactHelper:
     def __init__(self, app):
@@ -105,3 +107,26 @@ class ContactHelper:
         wd = self.app.wd
         self.app.navigation.open_home_page()
         return len(wd.find_elements_by_name("selected[]"))
+
+    def get_contact_list(self):
+        wd = self.app.wd
+        self.app.navigation.open_home_page()
+        contacts_list = []
+        wd.find_elements_by_name("entry")
+        for element in wd.find_elements_by_name("entry"):
+            #firstname = element.find_element_by_name("selected[]").get_attribute("title")
+            #id = element.find_element_by_name("selected[]").get_attribute("value")
+            # нашли все переменные в строке
+            all_cells = element.find_elements_by_tag_name("td")
+            # забираем содержимое ячеек 2 и 3 в локальные вырезки
+            firstname_cell = all_cells[1]
+            lastname_cell = all_cells[2]
+            #id_cell = all_cells[0] - не сработало
+            # теперь получаем именно текст из вырезок
+            firstname1 = firstname_cell.text
+            lastname1 = lastname_cell.text
+            id = element.find_element_by_name("selected[]").get_attribute("value")
+            #id = int(id_cell.find_element_by_name("selected[]").get_attribute("value")) - не сработало
+            # в список добавляем полученное ФИ + id
+            contacts_list.append(General(firstname=firstname1, lastname=lastname1, id=id))
+        return contacts_list
