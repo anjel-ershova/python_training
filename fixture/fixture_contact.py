@@ -40,8 +40,8 @@ class ContactHelper:
         # заполнение первого блока - General, используется метод fill_contact_form, переменные имеют заданное дефолтное значение
         self.edit_if_not_none("firstname", general.firstname)
         self.edit_if_not_none("middlename", general.middlename)
-        self.edit_if_not_none("lastname", general.nickname)
-        self.edit_if_not_none("nickname", general.lastname)
+        self.edit_if_not_none("lastname", general.lastname)
+        self.edit_if_not_none("nickname", general.nickname)
         wd.find_element_by_name("photo").send_keys("C:\\fun\\learn\\Python\\SoftwareTesting\\занятие1\\окружение.png")
         self.edit_if_not_none("title", general.title)
         self.edit_if_not_none("company", general.company)
@@ -119,12 +119,12 @@ class ContactHelper:
             # забираем содержимое ячеек 2 и 3 в локальные вырезки
             firstname_cell = all_cells[2]
             lastname_cell = all_cells[1]
-            #id_cell = all_cells[0]
+            id_cell = all_cells[0]
             # теперь получаем именно текст из вырезок
             firstname1 = firstname_cell.text
             lastname1 = lastname_cell.text
-            id = element.find_element_by_name("selected[]").get_attribute("value")
-            #id = int(id_cell.find_element_by_name("selected[]").get_attribute("value")) - не сработало
+            #id = element.find_element_by_name("selected[]").get_attribute("value")
+            id = int(id_cell.find_element_by_name("selected[]").get_attribute("value"))
             # в список добавляем полученное ФИ + id
             contacts_list.append(General(firstname=firstname1, lastname=lastname1, id=id))
         return contacts_list

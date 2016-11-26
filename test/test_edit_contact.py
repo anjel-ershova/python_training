@@ -5,13 +5,36 @@ def test_edit_contact_general(app2):
     if app2.contact.count() == 0:
         app2.contact.create(General(firstname="firstname-created", middlename="middlename-created", lastname="lastname-created", nickname="nickname-created", title="title-created",
                  company="company-created", address="address-created"), Telephone(),Email(), Secondary())
+    old_contact_list = app2.contact.get_contact_list()
+    # забираем в локальную переменную значение, которое будет присвоено firstname после модификации
+    general_firstname = General(firstname="new firstname", lastname="new lastname")
+    # запоминаем id элемента, который будет видоизменен
+    general_firstname.id = old_contact_list[0].id
+    # меняем значение поля
     app2.contact.edit_first_contact(field="firstname", text1="new firstname")
+    app2.contact.edit_first_contact(field="lastname", text1="new lastname")
+    # собираем новый список контактов
+    new_contact_list = app2.contact.get_contact_list()
+    # сравниваем длины списков, должны совпадать (ничего же не удаляли)
+    assert len(old_contact_list) == len(new_contact_list)
+    # присваиваем первому элементу старого списка то имя, на которое его меняли
+    old_contact_list[0] = general_firstname
+    # сравниваем 2 списка старый с запомненным id и именем, замененным на новое и новый
+    assert sorted(old_contact_list, key=General.id_or_max) == sorted(new_contact_list, key=General.id_or_max)
+
+"""
+
+    return old_contact_list
     app2.contact.edit_first_contact(field="middlename", text1="new middlename")
     app2.contact.edit_first_contact(field="lastname", text1="new lastname")
     app2.contact.edit_first_contact(field="nickname", text1="new nickname")
     app2.contact.edit_first_contact(field="title", text1="new title")
     app2.contact.edit_first_contact(field="company", text1="new company")
     app2.contact.edit_first_contact(field="address", text1="new address")
+
+
+# в последующих лекциях будет показан более оптимальный способ написания тестов
+
 
 #def test_edit_contact_picture(app2):
 #    app2.contact.edit_first_contact(field="photo", text="C:\\fun\\learn\\Python\\SoftwareTesting\\занятие3\\new_picture_for_contact.png")
@@ -52,3 +75,4 @@ def test_edit_contact_secondary(app2):
     app2.contact.edit_first_contact(field="address2", text1="new address2")
     app2.contact.edit_first_contact(field="phone2", text1="new phone2")
     app2.contact.edit_first_contact(field="notes", text1="new notes")
+"""

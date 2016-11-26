@@ -26,7 +26,6 @@ def test_add_contact(app2):
     old_contacts.append(contact_general)
     # сравниваем 2 полученных списка: новый и старый с добавленным контактом
     # для того, чтобы их можно было сравнивать в model_contacts надо добавить 2 метода: __eq__ и id_or_max
-    return old_contacts
     assert sorted(old_contacts, key=General.id_or_max) == sorted(new_contacts, key=General.id_or_max)
 
 #def test_add_empty_contact(app2):
