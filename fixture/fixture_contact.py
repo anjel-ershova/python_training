@@ -9,6 +9,16 @@ class ContactHelper:
     def __init__(self, app):
         self.app = app
 
+    def select_first_contact(self):
+        wd = self.app.wd
+        self.select_contact_by_index(0)
+
+    def select_contact_by_index(self, index):
+        wd = self.app.wd
+        row = wd.find_elements_by_name("entry")[index]
+        row.find_elements_by_tag_name("td")[0].click()
+
+
     def create(self, contact):
         wd = self.app.wd
         self.app.navigation.open_contact_creation_page()
@@ -52,7 +62,6 @@ class ContactHelper:
         self.edit_if_not_none("phone2", contact.home)
         self.edit_if_not_none("notes", contact.notes)
 
-
     def edit_if_not_none(self, field, text1):
         wd = self.app.wd
         if text1 is not None:
@@ -62,30 +71,34 @@ class ContactHelper:
         else:
             pass
 
-    def edit_first_contact(self, new_contact_data):
+    def edit_first_contact(self):
+        wd = self.app.wd
+        self.edit_contact_by_index(0)
+
+
+    def edit_contact_by_index(self, index, new_contact_data):
         wd = self.app.wd
         self.app.navigation.open_home_page()
-        self.select_first_contact()
-        # click edit icon
-        wd.find_element_by_xpath("//table[@id='maintable']/tbody/tr[2]/td[8]/a/img").click()
+        self.open_contact_by_index(index)
         self.fill_contact_form(new_contact_data)
         # submit edition
         wd.find_element_by_name("update").click()
         self.contact_cache = None
 
-    def delete_first_contact(self):
+    def open_contact_by_index(self, index):
+        wd = self.app.wd
+        row = wd.find_elements_by_name("entry")[index] # нашли рандомную строку
+        row.find_elements_by_tag_name("td")[7].click() # взяли 8 элемент (картинка редактирования), кликнули
+
+    def delete_contact_by_index(self, index):
         wd = self.app.wd
         # метод открытия домашней страницы должен браться из хелпера навигации
         self.app.navigation.open_home_page()
-        self.select_first_contact()
+        self.select_contact_by_index(index)
         # submit deletion
         wd.find_element_by_xpath("//div[@id='content']/form[2]/div[2]/input").click()
         wd.switch_to_alert().accept()
         self.contact_cache = None
-
-    def select_first_contact(self):
-        wd = self.app.wd
-        wd.find_element_by_name("selected[]").click()
 
     def count(self):
         wd = self.app.wd
@@ -118,4 +131,7 @@ class ContactHelper:
                 self.contact_cache.append(Contact(firstname2=firstname1, lastname=lastname1, id=id))
         # если кеш не пустой, то используем его копию
         return list(self.contact_cache)
+
+
+
 

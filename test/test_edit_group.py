@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from random import randrange
 from model.model_group import Group
 
 
@@ -10,17 +11,18 @@ def test_edit_group_name(app2):
     old_groups = app2.group.get_group_list()
     # забираем в локальную переменную значение, которое будет присвоено имени группы после модификации
     group = Group(name="new group_name")
+    index = randrange(len(old_groups)) # cлучайно генерит число
     # запоминаем id элемента, который будет видоизменен
-    group.id = old_groups[0].id
-    # меняем название первой группы списка на то, которое было запомнено
-    app2.group.edit_first_group(group)
+    group.id = old_groups[index].id
+    # меняем название случайной группы списка на то, которое было запомнено
+    app2.group.edit_group_by_index(index, group)
     # сравниваем длины списков, должны совпадать (ничего же не удаляли)
     # новый список сразу грузить не будем, дешевле измерить длину нового списка методом count
     assert len(old_groups) == app2.group.count()
     # собираем новый список из групп
     new_groups = app2.group.get_group_list()
     # присваиваем первому элементу старого списка то имя, на которое его меняли
-    old_groups[0] = group
+    old_groups[index] = group
     # сравниваем 2 списка старый с запомненным id и именем, замененным на новое и новый
     assert sorted(old_groups, key=Group.id_or_max) == sorted(new_groups, key=Group.id_or_max)
 
