@@ -1,4 +1,4 @@
-from model.alt_model_contact import *
+from model.model_contact import *
 
 def test_add_contact(app2):
     if app2.contact.count() == 0:

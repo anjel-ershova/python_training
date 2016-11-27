@@ -1,113 +1,61 @@
 from selenium.webdriver.support.ui import Select
 from random import randint
 from random import choice
-from model.alt_model_contact import *
+from model.model_contact import *
 
 
 class ContactHelper:
+
     def __init__(self, app):
         self.app = app
 
-    def create(self, general, telephone, email, secondary):
+    def create(self, contact):
         wd = self.app.wd
         self.app.navigation.open_contact_creation_page()
-        self.fill_contact_general(general)
-        self.fill_contact_telephone(telephone)
-        self.fill_contact_email(email)
-        self.fill_contact_secondary(secondary)
+        self.fill_contact_form(contact)
         # save_contact
         wd.find_element_by_name("submit").click()
         # return_to_home_page
         self.app.navigation.open_home_page()
 
-    def fill_calendar (self, day, month, year):
+    def fill_calendar(self, day, month, year):
         # для дат (число, год) используем randint, как сделать случайный месяц - пока не ясно
         wd = self.app.wd
         wd.find_element_by_name(day).send_keys(randint(1, 30))
         select = Select(wd.find_element_by_name(month))
         select.select_by_visible_text('January')
-        wd.find_element_by_name(year).send_keys(randint(1920,2017))
+        wd.find_element_by_name(year).send_keys(randint(1920, 2017))
 
-    def fill_contact_general(self, general):
+    def fill_contact_form(self, contact):
         wd = self.app.wd
         # заполнение первого блока - General, используется метод fill_contact_form, переменные имеют заданное дефолтное значение
-        self.edit_if_not_none("firstname", general.firstname)
-        self.edit_if_not_none("middlename", general.middlename)
-        self.edit_if_not_none("lastname", general.lastname)
-        self.edit_if_not_none("nickname", general.nickname)
+        self.edit_if_not_none("firstname", contact.firstname)
+        self.edit_if_not_none("middlename", contact.middlename)
+        self.edit_if_not_none("lastname", contact.lastname)
+        self.edit_if_not_none("nickname", contact.nickname)
         wd.find_element_by_name("photo").send_keys("C:\\fun\\learn\\Python\\SoftwareTesting\\занятие1\\окружение.png")
-        self.edit_if_not_none("title", general.title)
-        self.edit_if_not_none("company", general.company)
-        self.edit_if_not_none("address", general.address)
-
-    def fill_contact_telephone(self, telephone):
-        wd = self.app.wd
+        self.edit_if_not_none("title", contact.title)
+        self.edit_if_not_none("company", contact.company)
+        self.edit_if_not_none("address", contact.address)
         # заполнение телефона, используется метод fill_contact_form, переменные имеют заданное дефолтное значение
-        self.edit_if_not_none("home", telephone.home)
-        self.edit_if_not_none("mobile", telephone.mobile)
-        self.edit_if_not_none("work", telephone.work)
-        self.edit_if_not_none("fax", telephone.fax)
-
-    def fill_contact_email(self, email):
-        wd = self.app.wd
+        self.edit_if_not_none("home", contact.home)
+        self.edit_if_not_none("mobile", contact.mobile)
+        self.edit_if_not_none("work", contact.work)
+        self.edit_if_not_none("fax", contact.fax)
         # заполнение email, используется метод fill_contact_form, для иллюстрации значение переменной указано в тесте в явном виде
         # отдельно в классе дефолтное значение не задано
-        self.edit_if_not_none("email", email.email)
-        self.edit_if_not_none("email2", email.email2)
-        self.edit_if_not_none("email3", email.email3)
+        self.edit_if_not_none("email", contact.email)
+        self.edit_if_not_none("email2", contact.email2)
+        self.edit_if_not_none("email3", contact.email3)
         # заполнение сайта, используется метод fill_contact_form
         self.edit_if_not_none("homepage", "https://google.ru")
         # заполняем дату рождения и годовщину, используем отдельный метод fill_calendar
         self.fill_calendar(day='bday', month='bmonth', year='byear')
         self.fill_calendar(day='aday', month='amonth', year='ayear')
-
-    def fill_contact_secondary(self, secondary):
-        wd = self.app.wd
         # заполнение Secondary, переменные имеют заданное дефолтное значение
-        self.edit_if_not_none("address2", secondary.address2)
-        self.edit_if_not_none("phone2", secondary.home)
-        self.edit_if_not_none("notes", secondary.notes)
-
-
-    def edit_first_contact_general(self, new_contact_data):
-        wd = self.app.wd
-        self.app.navigation.open_home_page()
-        self.select_first_contact()
-        # click edit icon
-        wd.find_element_by_xpath("//table[@id='maintable']/tbody/tr[2]/td[8]/a/img").click()
-        self.fill_contact_general(new_contact_data)
-        # submit edition
-        wd.find_element_by_name("update").click()
-
-    def edit_first_contact_telephone(self, new_contact_data):
-        wd = self.app.wd
-        self.app.navigation.open_home_page()
-        self.select_first_contact()
-        # click edit icon
-        wd.find_element_by_xpath("//table[@id='maintable']/tbody/tr[2]/td[8]/a/img").click()
-        self.fill_contact_telephone(new_contact_data)
-        # submit edition
-        wd.find_element_by_name("update").click()
-
-    def edit_first_contact_email(self, new_contact_data):
-        wd = self.app.wd
-        self.app.navigation.open_home_page()
-        self.select_first_contact()
-        # click edit icon
-        wd.find_element_by_xpath("//table[@id='maintable']/tbody/tr[2]/td[8]/a/img").click()
-        self.fill_contact_email(new_contact_data)
-        # submit edition
-        wd.find_element_by_name("update").click()
-
-    def edit_first_contact_secondary(self, new_contact_data):
-        wd = self.app.wd
-        self.app.navigation.open_home_page()
-        self.select_first_contact()
-        # click edit icon
-        wd.find_element_by_xpath("//table[@id='maintable']/tbody/tr[2]/td[8]/a/img").click()
-        self.fill_contact_secondary(new_contact_data)
-        # submit edition
-        wd.find_element_by_name("update").click()
+        self.edit_if_not_none("address2", contact.address2)
+        self.edit_if_not_none("phone2", contact.home)
+        self.edit_if_not_none("notes", contact.notes)
 
 
     def edit_if_not_none(self, field, text1):
@@ -119,19 +67,15 @@ class ContactHelper:
         else:
             pass
 
-    def open_to_edit(self):
-        # удалить, когда полностью разберусь с датами, в т.ч. в методе test_edit_contact_dates()
+    def edit_first_contact(self, new_contact_data):
         wd = self.app.wd
         self.app.navigation.open_home_page()
         self.select_first_contact()
         # click edit icon
         wd.find_element_by_xpath("//table[@id='maintable']/tbody/tr[2]/td[8]/a/img").click()
-
-    def click_to_submit(self):
-        # удалить, когда полностью разберусь с датами, в т.ч. в методе test_edit_contact_dates()
-        wd = self.app.wd
+        self.fill_contact_form(new_contact_data)
+        # submit edition
         wd.find_element_by_name("update").click()
-
 
     def delete_first_contact(self):
         wd = self.app.wd
@@ -169,5 +113,6 @@ class ContactHelper:
             #id = element.find_element_by_name("selected[]").get_attribute("value")
             id = int(id_cell.find_element_by_name("selected[]").get_attribute("value"))
             # в список добавляем полученное ФИ + id
-            contacts_list.append(General(firstname=firstname1, lastname=lastname1, id=id))
+            contacts_list.append(Contact(firstname2=firstname1, lastname=lastname1, id=id))
         return contacts_list
+

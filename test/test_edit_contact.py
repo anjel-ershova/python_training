@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from model.alt112121212_model_contact import *
+from model.model_contact import *
 
 
 def test_edit_contact_general(app2):
