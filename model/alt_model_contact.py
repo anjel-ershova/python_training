@@ -20,12 +20,13 @@ class General:
 
     def id_or_max(self):
         if self.id:
-            return int(self.id)
+            # ради эксперимента убрано приведение self.id к числу - int(self.id), т.к. в методе get_contact_list и так id - число
+            return self.id
         else:
             return maxsize
 
 class Telephone:
-    def __init__(self, home=None, mobile=None, work=None, fax=None):
+    def __init__(self, home=None, mobile=None, work=None, fax=None, id=None):
         self.home = home
         self.mobile = mobile
         self.work = work
@@ -42,5 +43,4 @@ class Secondary:
         self.address2 = address2
         self.home = home
         self.notes = notes
-
 

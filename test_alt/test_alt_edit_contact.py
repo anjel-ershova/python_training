@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from model.model_contact import *
+from model.alt_model_contact import *
 
 def test_edit_contact_general(app2):
     if app2.contact.count() == 0:
@@ -7,45 +7,41 @@ def test_edit_contact_general(app2):
                  company="company-created", address="address-created"), Telephone(),Email(), Secondary())
     old_contact_list = app2.contact.get_contact_list()
     # забираем в локальную переменную значение, которое будет присвоено firstname после модификации
-    general_firstname = General(firstname="new firstname", lastname="new lastname")
+    fill_general = General(firstname="new firstname", lastname="new lastname", middlename="new middlename", nickname="new nickname", title="new title", company="new company", address="new address")
     # запоминаем id элемента, который будет видоизменен
-    general_firstname.id = old_contact_list[0].id
-    # меняем значение поля
-    app2.contact.edit_first_contact(field="firstname", text1="new firstname")
-    app2.contact.edit_first_contact(field="lastname", text1="new lastname")
+    fill_general.id = old_contact_list[0].id
+    # меняем значение поля general (и только его, другие поля должны использовать свои методы)
+    app2.contact.edit_first_contact_general(fill_general)
     # собираем новый список контактов
     new_contact_list = app2.contact.get_contact_list()
     # сравниваем длины списков, должны совпадать (ничего же не удаляли)
     assert len(old_contact_list) == len(new_contact_list)
     # присваиваем первому элементу старого списка то имя, на которое его меняли
-    old_contact_list[0] = general_firstname
+    old_contact_list[0] = fill_general
     # сравниваем 2 списка старый с запомненным id и именем, замененным на новое и новый
     assert sorted(old_contact_list, key=General.id_or_max) == sorted(new_contact_list, key=General.id_or_max)
 
+
+
+
 """
-
-    return old_contact_list
-    app2.contact.edit_first_contact(field="middlename", text1="new middlename")
-    app2.contact.edit_first_contact(field="lastname", text1="new lastname")
-    app2.contact.edit_first_contact(field="nickname", text1="new nickname")
-    app2.contact.edit_first_contact(field="title", text1="new title")
-    app2.contact.edit_first_contact(field="company", text1="new company")
-    app2.contact.edit_first_contact(field="address", text1="new address")
-
-
 # в последующих лекциях будет показан более оптимальный способ написания тестов
 
 
 #def test_edit_contact_picture(app2):
 #    app2.contact.edit_first_contact(field="photo", text="C:\\fun\\learn\\Python\\SoftwareTesting\\занятие3\\new_picture_for_contact.png")
 
+# тут начало сделано по аналогии с General, но надо менять get_contact_list в фикстуре, иначе завалится
 def test_edit_contact_telephone(app2):
     if app2.contact.count() == 0:
         app2.contact.create(General(), Telephone(home='home-created', mobile='mobile-created', work='work-created', fax='fax-created'),Email(), Secondary())
-    app2.contact.edit_first_contact(field="home", text1="new home number")
-    app2.contact.edit_first_contact(field="mobile", text1="new mobile number")
-    app2.contact.edit_first_contact(field="work", text1="new work number")
-    app2.contact.edit_first_contact(field="fax", text1="new fax number")
+    old_contact_list = app2.contact.get_contact_list()
+    fill_telephone = Telephone(home='new home number', mobile='new mobile number', work='new work number', fax='new fax number')
+    app2.contact.edit_first_contact_telephone(fill_telephone)
+    new_contact_list = app2.contact.get_contact_list()
+    assert len(old_contact_list) == len(new_contact_list)
+    old_contact_list[0] = fill_telephone
+    assert sorted(old_contact_list, key=General.id_or_max) == sorted(new_contact_list, key=General.id_or_max)
 
 def test_edit_contact_email(app2):
     if app2.contact.count() == 0:
@@ -72,7 +68,7 @@ def test_edit_contact_dates(app2):
 def test_edit_contact_secondary(app2):
     if app2.contact.count() == 0:
         app2.contact.create(General(), Telephone(), Email(), Secondary(address2='Another address-created', home='home_secondary-created', notes='Some text-created'))
-    app2.contact.edit_first_contact(field="address2", text1="new address2")
+    secondary = Secondary(address2='Another address-created', home='home_secondary-created', notes='Some text-created')
     app2.contact.edit_first_contact(field="phone2", text1="new phone2")
-    app2.contact.edit_first_contact(field="notes", text1="new notes")
 """
+

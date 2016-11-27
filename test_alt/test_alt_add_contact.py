@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-
-from model.model_contact import Email
-from model.model_contact import General
-from model.model_contact import Secondary
-from model.model_contact import Telephone
+from model.alt_model_contact import Email
+from model.alt_model_contact import General
+from model.alt_model_contact import Secondary
+from model.alt_model_contact import Telephone
 
 def test_add_contact(app2):
     # собираем старый список контактов
     old_contacts = app2.contact.get_contact_list()
     # выносим general в локальную переменную
-    contact_general = General(firstname="firstname", middlename="middlename", lastname="lastname", nickname="nickname", title="title",
+    contact_general = General(firstname="qqqfirstname", middlename="middlename", lastname="lastname", nickname="nickname", title="title",
                  company="company", address="address")
     # выносим список телефонов в локальную переменную
     contact_telephone = Telephone(home='555-5678', mobile='8-800-200-555-500', work='555-work', fax='812-123-23-34')
@@ -28,7 +28,9 @@ def test_add_contact(app2):
     # для того, чтобы их можно было сравнивать в model_contacts надо добавить 2 метода: __eq__ и id_or_max
     assert sorted(old_contacts, key=General.id_or_max) == sorted(new_contacts, key=General.id_or_max)
 
-#def test_add_empty_contact(app2):
-#    # все же заполняется картинка, сайт и даты, т.к. для них не было вынесего отдельных методов в model,
-#    # а сами изменения делаются напрямую в методе fill_contact_form
-#    app2.contact.create(General(), Telephone(), Email(), Secondary())
+
+#Просто тест создания пустого контакта, без излишеств
+def test_add_empty_contact(app2):
+    # все же заполняется картинка, сайт и даты, т.к. для них не было вынесего отдельных методов в model,
+    # а сами изменения делаются напрямую в методе fill_contact_form
+    app2.contact.create(General(), Telephone(), Email(), Secondary())
