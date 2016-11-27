@@ -8,17 +8,17 @@ def test_edit_contact(app2):
                  company=None, address="111111", id=None, home=None, mobile=None, work=None, fax=None, email=None, email2=None, email3=None,
                  address2=None, home2=None, notes=None))
     old_contact_list = app2.contact.get_contact_list()
-        # забираем в локальную переменную значение, которое будет присвоено firstname после модификации
+    # забираем в локальную переменную значение, которое будет присвоено firstname после модификации
     contact = Contact(firstname2="new firstname1111", lastname="new lastname1111")
-        # запоминаем id элемента, который будет видоизменен
+    # запоминаем id элемента, который будет видоизменен
     contact.id = old_contact_list[0].id
-        # меняем значение поля
+    # меняем значение поля
     app2.contact.edit_first_contact(contact)
-        # собираем новый список контактов
+    # сравниваем длины списков, должны совпадать (ничего же не удаляли)
+    assert len(old_contact_list) == app2.contact.count()
+    # собираем новый список контактов
     new_contact_list = app2.contact.get_contact_list()
-        # сравниваем длины списков, должны совпадать (ничего же не удаляли)
-    assert len(old_contact_list) == len(new_contact_list)
-        # присваиваем первому элементу старого списка то имя, на которое его меняли
+    # присваиваем первому элементу старого списка то имя, на которое его меняли
     old_contact_list[0] = contact
-        # сравниваем 2 списка старый с запомненным id и именем, замененным на новое и новый
+    # сравниваем 2 списка старый с запомненным id и именем, замененным на новое и новый
     assert sorted(old_contact_list, key=Contact.id_or_max) == sorted(new_contact_list, key=Contact.id_or_max)

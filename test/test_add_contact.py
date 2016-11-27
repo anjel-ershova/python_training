@@ -11,10 +11,10 @@ def test_add_contact(app2):
                  address2="Another address", home2="home_secondary", notes="Some text")
     # выполняем создание контакта в соответствии с локальными переменными
     app2.contact.create(contact_data)
+    # сравниваем старый и новый списки по длине, новый == старый +1, длину старого списка берем методом count
+    assert len(old_contacts) + 1 == app2.contact.count()
     # собираем новый список контактов (после создания нового)
     new_contacts = app2.contact.get_contact_list()
-    # сравниваем старый и новый списки по длине, новый == старый +1
-    assert len(old_contacts) + 1 == len(new_contacts)
     #добавляем в старый список данные от нового созданного контакта (из локальных переменных)
     old_contacts.append(contact_data)
     # сравниваем 2 полученных списка: новый и старый с добавленным контактом
@@ -29,8 +29,8 @@ def test_add_empty_contact(app2):
     # все же заполняется картинка, сайт и даты, т.к. для них не было вынесего отдельных методов в model,
     # а сами изменения делаются напрямую в методе fill_contact_form
     app2.contact.create(contact_data)
+    assert len(old_contacts) + 1 == app2.contact.count()
     new_contacts = app2.contact.get_contact_list()
-    assert len(old_contacts) + 1 == len(new_contacts)
     old_contacts.append(contact_data)
     assert sorted(old_contacts, key=Contact.id_or_max) == sorted(new_contacts, key=Contact.id_or_max)
 
