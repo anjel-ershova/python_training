@@ -1,9 +1,8 @@
 from selenium.webdriver.firefox.webdriver import WebDriver
 from fixture.session import SessionHelper
-from fixture.fixture_contact import ContactHelper
 from fixture.fixture_group import GroupHelper
 from fixture.navigation import NavigationHelper
-
+from fixture.fixture_contact import *
 
 class Application:
     def __init__(self):
