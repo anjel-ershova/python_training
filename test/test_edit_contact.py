@@ -2,7 +2,7 @@
 from model.model_contact import *
 
 
-def test_edit_contact_general(app2):
+def test_edit_contact(app2):
     if app2.contact.count() == 0:
         app2.contact.create(Contact(firstname2=None, middlename=None, lastname=None, nickname=None, title=None,
                  company=None, address="111111", id=None, home=None, mobile=None, work=None, fax=None, email=None, email2=None, email3=None,
@@ -22,10 +22,3 @@ def test_edit_contact_general(app2):
     old_contact_list[0] = contact
         # сравниваем 2 списка старый с запомненным id и именем, замененным на новое и новый
     assert sorted(old_contact_list, key=Contact.id_or_max) == sorted(new_contact_list, key=Contact.id_or_max)
-
-"""
-def test_add_empty_contact(app2):
-    # все же заполняется картинка, сайт и даты, т.к. для них не было вынесего отдельных методов в model,
-    # а сами изменения делаются напрямую в методе fill_contact_form
-    app2.contact.create(Contact())
-"""
