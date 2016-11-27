@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 from model.model_contact import Contact
 
-
 def test_add_contact(app2):
     # собираем старый список контактов
     old_contacts = app2.contact.get_contact_list()
@@ -22,9 +21,21 @@ def test_add_contact(app2):
     # для того, чтобы их можно было сравнивать в model_contacts надо добавить 2 метода: __eq__ и id_or_max
     assert sorted(old_contacts, key=Contact.id_or_max) == sorted(new_contacts, key=Contact.id_or_max)
 
-#Просто тест создания пустого контакта, без излишеств
 def test_add_empty_contact(app2):
+    old_contacts = app2.contact.get_contact_list()
+    contact_data = Contact(firstname2="", middlename="", lastname="", nickname="", title="",
+                 company="", address="", home="", mobile="", work="", fax="", email="", email2="", email3="",
+                 address2="", home2="", notes="")
     # все же заполняется картинка, сайт и даты, т.к. для них не было вынесего отдельных методов в model,
     # а сами изменения делаются напрямую в методе fill_contact_form
-    app2.contact.create(Contact())
+    app2.contact.create(contact_data)
+    new_contacts = app2.contact.get_contact_list()
+    assert len(old_contacts) + 1 == len(new_contacts)
+    old_contacts.append(contact_data)
+    assert sorted(old_contacts, key=Contact.id_or_max) == sorted(new_contacts, key=Contact.id_or_max)
+
+
+
+
+
 

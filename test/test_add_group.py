@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 from model.model_group import *
 
-
 def test_add_group(app2):
     old_groups = app2.group.get_group_list()
     group = Group(name="group_name1", footer="group_footer1", header="group_header1", id=None)
