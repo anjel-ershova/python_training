@@ -1,15 +1,18 @@
 # -*- coding: utf-8 -*-
 from model.model_group import *
+import pytest
 
-def test_add_group(app2):
-    testdata = [Group(name="group_name1", footer="group_footer1", header="group_header1", id=None),
-            Group(name="", footer="", header="")
+testdata = [Group(name="group_name1", footer="group_footer1", header="group_header1", id=None),
+        Group(name="", footer="", header="")
 ]
-    for group in testdata:
-        old_groups = app2.group.get_group_list()
-        app2.group.create(group)
-        assert len(old_groups) + 1 == app2.group.count()
-        new_groups = app2.group.get_group_list()
-        old_groups.append(group)
-        assert sorted(old_groups, key=Group.id_or_max) == sorted(new_groups, key=Group.id_or_max)
+
+@pytest.mark.parametrize("group", testdata) # 1 - название параметра, куда передаются тест. данные, 2 - откуда тест. данные брать
+def test_add_group(app2, group):
+    pass
+    #old_groups = app2.group.get_group_list()
+    #app2.group.create(group)
+    #assert len(old_groups) + 1 == app2.group.count()
+    #new_groups = app2.group.get_group_list()
+    #old_groups.append(group)
+    #assert sorted(old_groups, key=Group.id_or_max) == sorted(new_groups, key=Group.id_or_max)
 
