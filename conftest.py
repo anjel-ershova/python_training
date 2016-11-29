@@ -4,19 +4,19 @@ from fixture.application import Application
 fixture = None
 
 @pytest.fixture
-def app2():
+def app2(request):
     global fixture
+    # параметры, которые при запуске из командной строки позволяют указывать браузер и/или стартовую страницу
+    browser = request.config.getoption("--browser")
+    baseurl = request.config.getoption("--baseurl")
     if fixture is None:
         # строка ниже инициализирует фикстуру, происходит создание сессии
-        fixture = Application()
-        #fixture.session.ensure_login(username="admin", password="secret")
+        fixture = Application(browser=browser, baseurl=baseurl)
     else:
         # метод, проверяющий, валидна ли фикстура
         if not fixture.is_valid():
             # строка ниже инициализирует фикстуру, происходит создание сессии
-            fixture = Application()
-            #fixture.session.ensure_login(username="admin", password="secret")
-    #  если убирать эту строку выше в if-than-else, то падают тесты, которые разлогиниваются в процессе прохождения
+            fixture = Application(browser=browser, baseurl=baseurl)
     fixture.session.ensure_login(username="admin", password="secret")
     # возвращаем фикстуру (что с ней, работает или нет)
     return fixture
@@ -29,3 +29,7 @@ def stop(request):
         fixture.destroy()
     request.addfinalizer(fin)
     return fixture
+
+def pytest_addoption(parser):
+    parser.addoption("--browser", action="store", default="firefox")
+    parser.addoption("--baseurl", action="store", default="http://localhost/addressbook/")
