@@ -4,8 +4,8 @@ from model.model_contact import *
 def test_delete_first_contact(app2):
     if app2.contact.count() == 0:
         app2.contact.create(Contact(firstname2="firstname-created", middlename="middlename-created", lastname="lastname-created", nickname="nickname-created", title="title-created",
-                company="company-created", address="address-created", home='home-created', mobile='mobile-created', work='work-created', fax='fax-created',
-                email='email-created@mfsa.ru', email2='email2-created@mfsa.ru', email3='email3-created@mfsa.ru', address2='Another address-created', home2='home_secondary-created', notes='Some text-created'))
+                                    company="company-created", address="address-created", home='home-created', mobile='mobile-created', work='work-created', fax='fax-created',
+                                    email='email-created@mfsa.ru', email2='email2-created@mfsa.ru', email3='email3-created@mfsa.ru', address2='Another address-created', phone2='home_secondary-created', notes='Some text-created'))
     old_contacts = app2.contact.get_contact_list()
     index = randrange(len(old_contacts))
     app2.contact.delete_contact_by_index(index)
