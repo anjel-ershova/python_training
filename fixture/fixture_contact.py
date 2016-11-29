@@ -77,7 +77,6 @@ class ContactHelper:
         wd = self.app.wd
         self.edit_contact_by_index(0)
 
-
     def edit_contact_by_index(self, index, new_contact_data):
         wd = self.app.wd
         self.app.navigation.open_home_page()
@@ -138,20 +137,23 @@ class ContactHelper:
                 # нашли все переменные в строке
                 all_cells = element.find_elements_by_tag_name("td")
                 # забираем содержимое ячеек 2,3 и 6 в локальные вырезки
-                firstname_cell = all_cells[2]
-                lastname_cell = all_cells[1]
                 id_cell = all_cells[0]
+                lastname_cell = all_cells[1]
+                firstname_cell = all_cells[2]
+                address_cell = all_cells[3]
+                all_emails_cell = all_cells[4]
                 all_phones_cell = all_cells[5]
                 # теперь получаем именно текст из вырезок
                 firstname1 = firstname_cell.text
                 lastname1 = lastname_cell.text
-                all_phones = all_phones_cell.text.splitlines()
+                all_phones = all_phones_cell.text
+                all_emails = all_emails_cell.text
+                address = address_cell.text
                 #id = element.find_element_by_name("selected[]").get_attribute("value")
                 id = int(id_cell.find_element_by_name("selected[]").get_attribute("value"))
                 # в кеш добавляем полученное ФИ + id
-                self.contact_cache.append(Contact(firstname2=firstname1, lastname=lastname1, id=id,
-                                                  home=all_phones[0], mobile=all_phones[1],
-                                                  work=all_phones[2], phone2=all_phones[3]))
+                self.contact_cache.append(Contact(firstname2=firstname1, lastname=lastname1, id=id, address=address,
+                                                  all_phones_from_homepage=all_phones, all_emails_from_homepage=all_emails))
         # если кеш не пустой, то используем его копию
         return list(self.contact_cache)
 
@@ -161,15 +163,18 @@ class ContactHelper:
         firstname = wd.find_element_by_name("firstname").get_attribute("value")
         lastname = wd.find_element_by_name("lastname").get_attribute("value")
         id = wd.find_element_by_name("id").get_attribute("value")
+        address = wd.find_element_by_name("address").get_attribute("value")
         homephone = wd.find_element_by_name("home").get_attribute("value")
-        mobilephone = wd.find_element_by_name("mobile").get_attribute("value")
         workphone = wd.find_element_by_name("work").get_attribute("value")
+        mobilephone = wd.find_element_by_name("mobile").get_attribute("value")
         secondaryphone = wd.find_element_by_name("phone2").get_attribute("value")
+        email = wd.find_element_by_name("email").get_attribute("value")
+        email2 = wd.find_element_by_name("email2").get_attribute("value")
+        email3 = wd.find_element_by_name("email3").get_attribute("value")
         # строим свой объект
-        return Contact(firstname2=firstname, lastname=lastname, id=id,
-                       home=homephone, mobile=mobilephone,
-                       work=workphone, phone2=secondaryphone)
-
+        return Contact(firstname2=firstname, lastname=lastname, id=id, address=address,
+                       home=homephone, work=workphone, mobile=mobilephone, phone2=secondaryphone,
+                       email=email,email2=email2,email3=email3)
 
     def get_contact_info_from_view_page(self, index):
         self.open_contact_to_view_by_index(index)
@@ -177,11 +182,10 @@ class ContactHelper:
         text = wd.find_element_by_id("content").text
         # регулярное выражение ищет что-то с определенными префиксами, до перевода строки (.*), group() - выводит содержимое строки
         homephone = re.search("H: (.*)", text).group(1)
-        mobilephone = re.search("M: (.*)", text).group(1)
         workphone = re.search("W: (.*)", text).group(1)
+        mobilephone = re.search("M: (.*)", text).group(1)
         secondaryphone = re.search("P: (.*)", text).group(1)
-        return Contact(home=homephone, mobile=mobilephone,
-                       work=workphone, phone2=secondaryphone)
+        return Contact(home=homephone, work=workphone, mobile=mobilephone, phone2=secondaryphone)
 
 
 
