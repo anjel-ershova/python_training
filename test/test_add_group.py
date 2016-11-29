@@ -10,8 +10,10 @@ def random_string(prefix, maxlen):
     return prefix + "".join([random.choice(symbols) for i in range(random.randrange(maxlen))])
 
 testdata = [Group(name="", footer="", header="")] + [
-    Group(name=random_string("name", 10), footer=random_string("footer", 20), header=random_string("header", 20))
-    for i in range(5)
+    Group(name=name, footer=footer, header=header)
+    for name in ["", random_string("name", 10)]
+    for footer in ["", random_string("footer", 20)]
+    for header in ["", random_string("header", 20)]
 ]
 
 # 1 - название параметра, куда передаются тест. данные,
