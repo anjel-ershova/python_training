@@ -2,6 +2,8 @@ from selenium.webdriver.support.ui import Select
 from random import randint
 from random import choice
 from model.model_contact import *
+import re
+
 
 
 class ContactHelper:
@@ -47,9 +49,9 @@ class ContactHelper:
         self.edit_if_not_none("title", contact.title)
         self.edit_if_not_none("company", contact.company)
         self.edit_if_not_none("address", contact.address)
-        self.edit_if_not_none("home", contact.home)
-        self.edit_if_not_none("mobile", contact.mobile)
-        self.edit_if_not_none("work", contact.work)
+        self.edit_if_not_none("homephone", contact.homephone)
+        self.edit_if_not_none("mobilephone", contact.mobilephone)
+        self.edit_if_not_none("workphone", contact.workphone)
         self.edit_if_not_none("fax", contact.fax)
         self.edit_if_not_none("email", contact.email)
         self.edit_if_not_none("email2", contact.email2)
@@ -59,7 +61,7 @@ class ContactHelper:
         self.fill_calendar(day='bday', month='bmonth', year='byear')
         self.fill_calendar(day='aday', month='amonth', year='ayear')
         self.edit_if_not_none("address2", contact.address2)
-        self.edit_if_not_none("phone2", contact.home)
+        self.edit_if_not_none("phone2", contact.secondaryphone)
         self.edit_if_not_none("notes", contact.notes)
 
     def edit_if_not_none(self, field, text1):
@@ -79,16 +81,33 @@ class ContactHelper:
     def edit_contact_by_index(self, index, new_contact_data):
         wd = self.app.wd
         self.app.navigation.open_home_page()
-        self.open_contact_by_index(index)
+        self.open_contact_to_edit_by_index(index)
         self.fill_contact_form(new_contact_data)
         # submit edition
         wd.find_element_by_name("update").click()
         self.contact_cache = None
 
-    def open_contact_by_index(self, index):
+    def open_contact_to_edit_by_index(self, index):
         wd = self.app.wd
-        row = wd.find_elements_by_name("entry")[index] # нашли рандомную строку
+        self.app.navigation.open_home_page()
+        #так показано в лекциях
+#        row = wd.find_elements_by_name("entry")[index]  # нашли рандомную строку
+#        cell = row.find_elements_by_tag_name("td")[7]
+#        cell.find_element_by_tag_name("a").click()
+        #но работает и так
+        row = wd.find_elements_by_name("entry")[index] # нашли строку по индексу
         row.find_elements_by_tag_name("td")[7].click() # взяли 8 элемент (картинка редактирования), кликнули
+
+    def open_contact_to_view_by_index(self, index):
+        wd = self.app.wd
+        self.app.navigation.open_home_page()
+        #так показано в лекциях
+#        row = wd.find_elements_by_name("entry")[index] # нашли рандомную строку
+#        cell = row.find_elements_by_tag_name("td")[6]
+#        cell.find_element_by_tag_name("a").click()
+        #но работает и так
+        row = wd.find_elements_by_name("entry")[index]  # нашли строку по индексу
+        row.find_elements_by_tag_name("td")[6].click()  # взяли 7 элемент (картинка просмотра), кликнули
 
     def delete_contact_by_index(self, index):
         wd = self.app.wd
@@ -122,15 +141,47 @@ class ContactHelper:
                 firstname_cell = all_cells[2]
                 lastname_cell = all_cells[1]
                 id_cell = all_cells[0]
+                all_phones_cell = all_cells[5]
                 # теперь получаем именно текст из вырезок
                 firstname1 = firstname_cell.text
                 lastname1 = lastname_cell.text
+                all_phones = all_phones_cell.text.splitlines()
                 #id = element.find_element_by_name("selected[]").get_attribute("value")
                 id = int(id_cell.find_element_by_name("selected[]").get_attribute("value"))
                 # в кеш добавляем полученное ФИ + id
-                self.contact_cache.append(Contact(firstname2=firstname1, lastname=lastname1, id=id))
+                self.contact_cache.append(Contact(firstname2=firstname1, lastname=lastname1, id=id,
+                                                  homephone=all_phones[0], mobilephone=all_phones[1],
+                                                  workphone=all_phones[2], secondaryphone2=all_phones[3]))
         # если кеш не пустой, то используем его копию
         return list(self.contact_cache)
+
+    def get_contact_info_from_edit_page(self, index):
+        self.open_contact_to_edit_by_index(index)
+        wd = self.app.wd
+        firstname = wd.find_element_by_name("firstname").get_attribute("value")
+        lastname = wd.find_element_by_name("lastname").get_attribute("value")
+        id = wd.find_element_by_name("id").get_attribute("value")
+        homephone = wd.find_element_by_name("home").get_attribute("value")
+        mobilephone = wd.find_element_by_name("mobile").get_attribute("value")
+        workphone = wd.find_element_by_name("work").get_attribute("value")
+        secondaryphone = wd.find_element_by_name("phone2").get_attribute("value")
+        # строим свой объект
+        return Contact(firstname2=firstname, lastname=lastname, id=id,
+                        homephone=homephone, mobilephone=mobilephone,
+                       workphone=workphone, secondaryphone2=secondaryphone)
+
+
+    def get_contact_info_from_view_page(self, index):
+        self.open_contact_to_view_by_index(index)
+        wd = self.app.wd
+        text = wd.find_element_by_id("content").text
+        # регулярное выражение ищет что-то с определенными префиксами, до перевода строки (.*), group() - выводит содержимое строки
+        homephone = re.search("H: (.*)", text).group(1)
+        mobilephone = re.search("M: (.*)", text).group(1)
+        workphone = re.search("W: (.*)", text).group(1)
+        secondaryphone = re.search("P: (.*)", text).group(1)
+        return Contact(homephone=homephone, mobilephone=mobilephone,
+                       workphone=workphone, secondaryphone2=secondaryphone)
 
 
 
