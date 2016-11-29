@@ -6,9 +6,9 @@ def test_add_contact(app2):
     old_contacts = app2.contact.get_contact_list()
     # выносим данные контакта в локальную переменную
     contact_data = Contact(firstname2="firstname2", middlename="middlename", lastname="lastname", nickname="nickname", title="title",
-                           company="company", address="address", homephone="555-5678", mobilephone="8-800-200-555-500", workphone="555-workphone", fax="812-123-23-34", email="email@mfsa.ru",
+                 company="company", address="address", home="555-5678", mobile="8-800-200-555-500", work="555-work", fax="812-123-23-34", email="email@mfsa.ru",
                            email2="email2@mfsa.ru", email3="email3@mfsa.ru",
-                           address2="Another address", secondaryphone2="home_secondary", notes="Some text")
+                 address2="Another address", home2="home_secondary", notes="Some text")
     # выполняем создание контакта в соответствии с локальными переменными
     app2.contact.create(contact_data)
     # сравниваем старый и новый списки по длине, новый == старый +1, длину старого списка берем методом count
@@ -24,8 +24,8 @@ def test_add_contact(app2):
 def test_add_empty_contact(app2):
     old_contacts = app2.contact.get_contact_list()
     contact_data = Contact(firstname2="", middlename="", lastname="", nickname="", title="",
-                           company="", address="", homephone="", mobilephone="", workphone="", fax="", email="", email2="", email3="",
-                           address2="", secondaryphone2="", notes="")
+                 company="", address="", home="", mobile="", work="", fax="", email="", email2="", email3="",
+                 address2="", home2="", notes="")
     # все же заполняется картинка, сайт и даты, т.к. для них не было вынесего отдельных методов в model,
     # а сами изменения делаются напрямую в методе fill_contact_form
     app2.contact.create(contact_data)

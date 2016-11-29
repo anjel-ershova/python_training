@@ -6,8 +6,8 @@ from model.model_contact import *
 def test_edit_contact(app2):
     if app2.contact.count() == 0:
         app2.contact.create(Contact(firstname2=None, middlename=None, lastname=None, nickname=None, title=None,
-                                    company=None, address="111111", id=None, homephone=None, mobilephone=None, workphone=None, fax=None, email=None, email2=None, email3=None,
-                                    address2=None, secondaryphone2=None, notes=None))
+                 company=None, address="111111", id=None, home=None, mobile=None, work=None, fax=None, email=None, email2=None, email3=None,
+                 address2=None, home2=None, notes=None))
     old_contact_list = app2.contact.get_contact_list()
     # забираем в локальную переменную значение, которое будет присвоено firstname после модификации
     contact = Contact(firstname2="new firstname1111", lastname="new lastname1111")
