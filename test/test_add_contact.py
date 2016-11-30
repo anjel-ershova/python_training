@@ -2,8 +2,8 @@
 from model.model_contact import Contact
 import pytest
 
-def test_add_contact(app2, data_data_contact):
-    contact = data_data_contact
+def test_add_contact(app2, json_contacts):
+    contact = json_contacts
     # собираем старый список контактов
     old_contacts = app2.contact.get_contact_list()
     # выполняем создание контакта в соответствии с локальными переменными
