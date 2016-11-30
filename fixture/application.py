@@ -13,6 +13,9 @@ class Application:
             self.wd = webdriver.Chrome()
         elif browser == 'ie':
             self.wd = webdriver.Ie()
+            self.wd.implicitly_wait(10)
+        elif browser == 'edge':
+            self.wd = webdriver.Edge()
         else:
             raise ValueError('Unrecognized browser %s' % browser)
         self.session = SessionHelper(self)

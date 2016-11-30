@@ -12,6 +12,7 @@ def app2(request):
     if fixture is None:
         # строка ниже инициализирует фикстуру, происходит создание сессии
         fixture = Application(browser=browser, baseurl=baseurl)
+
     else:
         # метод, проверяющий, валидна ли фикстура
         if not fixture.is_valid():
