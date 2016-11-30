@@ -1,18 +1,7 @@
 # -*- coding: utf-8 -*-
 from model.model_group import *
 import pytest
-import random
-import string
-
-
-def random_string(prefix, maxlen):
-    symbols = string.ascii_letters + string.digits + string.punctuation + " "*10
-    return prefix + "".join([random.choice(symbols) for i in range(random.randrange(maxlen))])
-
-testdata = [Group(name="", footer="", header="")] + [
-    Group(name=random_string("name", 10), footer=random_string("footer", 20), header=random_string("header", 20))
-    for i in range(1)
-]
+from data.data_add_group import constant as testdata
 
 # 1 - название параметра, куда передаются тест. данные,
 # 2 - откуда тест. данные брать,
