@@ -1,24 +1,27 @@
+import os.path
+import json
 import pytest
 from fixture.application import Application
 
 fixture = None
+target = None
 
 @pytest.fixture
 def app2(request):
     global fixture
+    global target
     # параметры, которые при запуске из командной строки позволяют указывать браузер и/или стартовую страницу
     browser = request.config.getoption("--browser")
-    baseurl = request.config.getoption("--baseurl")
-    if fixture is None:
-        # строка ниже инициализирует фикстуру, происходит создание сессии
-        fixture = Application(browser=browser, baseurl=baseurl)
-
-    else:
-        # метод, проверяющий, валидна ли фикстура
-        if not fixture.is_valid():
-            # строка ниже инициализирует фикстуру, происходит создание сессии
-            fixture = Application(browser=browser, baseurl=baseurl)
-    fixture.session.ensure_login(username="admin", password="secret")
+    if target is None:
+        config_file_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), request.config.getoption("--target"))
+        # config_file_path - лок. перем., содержащая путь к конфигу,
+        # config_file_obj - переменная, которая содержит объект, указывающий на открытый файл
+        with open(config_file_path) as config_file_obj:
+            target = json.load(config_file_obj)
+    if fixture is None or not fixture.is_valid():
+        # строка ниже инициализирует фикстуру eckb ее нет или она невалидна, происходит создание сессии
+        fixture = Application(browser=browser, baseurl=target["baseurl"])
+    fixture.session.ensure_login(username=target["username"], password=target["password"])
     # возвращаем фикстуру (что с ней, работает или нет)
     return fixture
 
@@ -33,4 +36,4 @@ def stop(request):
 
 def pytest_addoption(parser):
     parser.addoption("--browser", action="store", default="firefox")
-    parser.addoption("--baseurl", action="store", default="http://localhost/addressbook/")
+    parser.addoption("--target", action="store", default="target.json")
