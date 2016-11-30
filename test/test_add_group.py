@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 from model.model_group import *
 
+def test_add_group(app2, data_data_group):
+    group = data_data_group
     old_groups = app2.group.get_group_list()
     app2.group.create(group)
     assert len(old_groups) + 1 == app2.group.count()

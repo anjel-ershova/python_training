@@ -48,6 +48,7 @@ def pytest_generate_tests(metafunc):
             # 2 - откуда тест. данные брать,
             # 3 - список с текстовым предлставлением тест. данных
             metafunc.parametrize(fixture, testdata, ids=[str(x) for x in testdata])
+
 def load_from_module(module):
     return importlib.import_module("data.%s" % module).testdata
 
