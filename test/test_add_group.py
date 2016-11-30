@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from model.model_group import *
 import pytest
-from data.data_add_group import constant as testdata
+from data.data_group import constant as testdata
 
 # 1 - название параметра, куда передаются тест. данные,
 # 2 - откуда тест. данные брать,
