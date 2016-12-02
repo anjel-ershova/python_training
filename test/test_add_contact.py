@@ -2,16 +2,16 @@
 from model.model_contact import Contact
 import pytest
 
-def test_add_contact(app2, json_contacts):
+def test_add_contact(app2, db, json_contacts):
     contact = json_contacts
-    # собираем старый список контактов
-    old_contacts = app2.contact.get_contact_list()
+    # берем длину старого списка из базы
+    old_contacts = db.get_contact_list()
     # выполняем создание контакта в соответствии с локальными переменными
     app2.contact.create(contact)
-    # сравниваем старый и новый списки по длине, новый == старый +1, длину старого списка берем методом count
-    assert len(old_contacts) + 1 == app2.contact.count()
-    # собираем новый список контактов (после создания нового)
+    # собираем новый список контактов (после создания нового) - с UI
     new_contacts = app2.contact.get_contact_list()
+    # сравниваем старый и новый списки по длине, новый == старый +1, длину старого списка берем методом count
+    assert len(old_contacts) + 1 == len(new_contacts)
     #добавляем в старый список данные от нового созданного контакта (из локальных переменных)
     old_contacts.append(contact)
     # сравниваем 2 полученных списка: новый и старый с добавленным контактом

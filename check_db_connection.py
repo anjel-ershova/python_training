@@ -1,7 +1,6 @@
 import pymysql.cursors
 # есть еще другой вариант для пакета mysql.connector.connect: mysql.connector.connect()
 
-
 connection = pymysql.connect(host="127.0.0.1", database="addressbook", user="root", password="")
 
 try:
@@ -11,3 +10,4 @@ try:
         print(row)
 finally:
     connection.close()
+

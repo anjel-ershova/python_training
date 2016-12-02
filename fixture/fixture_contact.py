@@ -20,6 +20,9 @@ class ContactHelper:
         row = wd.find_elements_by_name("entry")[index]
         row.find_elements_by_tag_name("td")[0].click()
 
+    def select_contact_by_id(self, id):
+        wd = self.app.wd
+        wd.find_element_by_css_selector("input[value='%s']" % id).click()
 
     def create(self, contact):
         wd = self.app.wd
@@ -86,6 +89,14 @@ class ContactHelper:
         wd.find_element_by_name("update").click()
         self.contact_cache = None
 
+    def edit_contact_by_id(self, id, new_contact_data):
+        wd = self.app.wd
+        self.app.navigation.open_home_page()
+        wd.get("http://localhost/addressbook/edit.php?id={0}".format(id))
+        self.fill_contact_form(new_contact_data)
+        wd.find_element_by_name("update").click()
+        self.contact_cache = None
+
     def open_contact_to_edit_by_index(self, index):
         wd = self.app.wd
         self.app.navigation.open_home_page()
@@ -113,6 +124,15 @@ class ContactHelper:
         # метод открытия домашней страницы должен браться из хелпера навигации
         self.app.navigation.open_home_page()
         self.select_contact_by_index(index)
+        # submit deletion
+        wd.find_element_by_xpath("//div[@id='content']/form[2]/div[2]/input").click()
+        wd.switch_to_alert().accept()
+        self.contact_cache = None
+
+    def delete_contact_by_id(self, id):
+        wd = self.app.wd
+        self.app.navigation.open_home_page()
+        self.select_contact_by_id(id)
         # submit deletion
         wd.find_element_by_xpath("//div[@id='content']/form[2]/div[2]/input").click()
         wd.switch_to_alert().accept()

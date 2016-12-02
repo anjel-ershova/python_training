@@ -1,6 +1,8 @@
 import mysql
 import pymysql.cursors
 from model.model_group import Group
+from model.model_contact import Contact
+
 
 class DbFixture:
 
@@ -28,19 +30,15 @@ class DbFixture:
     def destroy(self):
         self.connection.close()
 
-"""
     def get_contact_list(self):
         list = []
         cursor = self.connection.cursor()
         try:
-            cursor.execute("SELECT id, firstname, lastname, nickname, company, title, address, home, mobile, work, fax, email, email2, email3, address2, phone2, notes FROM addressbook")
+            cursor.execute("SELECT id, firstname, lastname, nickname, company, title, address, home, mobile, work, fax, email, email2, email3, address2, phone2, notes FROM addressbook WHERE deprecated='0000-00-00 00:00:00'")
             for row in cursor:
-                (id, firstname, lastname, nickname, company, title, address, home, mobile, work, fax, email, email2, email3, homepage, bday, bmonth, byear, aday, amonth, ayear, address2, phone2, notes) = row
-                list.append(Contact(id=id, firstname=firstname, lastname=lastname, nickname=nickname, company=company, title=title, address=address, home=home, mobile=mobile, work=work, fax=fax, email=email, email2=email2, email3=email3, address2=address2, phone2=phone2, notes=notes))
+                (id, firstname, lastname, nickname, company, title, address, home, mobile, work, fax, email, email2, email3, address2, phone2, notes) = row
+                list.append(Contact(id=id, firstname2=firstname, lastname=lastname, nickname=nickname, company=company, title=title, address=address, home=home, mobile=mobile, work=work, fax=fax, email=email, email2=email2, email3=email3, address2=address2, phone2=phone2, notes=notes))
         finally:
             cursor.close()
         return list
-"""
-
-
 
