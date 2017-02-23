@@ -7,7 +7,7 @@ def test_edit_group_name(app2, db, check_ui):
     if len(db.get_group_list()) == 0:
         app2.group.create(Group(name="Created name"))
     # собираем старый список групп
-    old_groups = app2.group.get_group_list()
+    old_groups = db.get_group_list()
     group = random.choice(old_groups)
 #    # было: запоминаем id элемента, который будет видоизменен
 #    group.id = old_groups[index].id

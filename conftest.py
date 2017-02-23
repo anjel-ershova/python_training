@@ -23,7 +23,7 @@ def load_config(file):
 def app2(request):
     global fixture
     # параметры, которые при запуске из командной строки позволяют указывать браузер
-#    browser = request.config.getoption("--browser")
+# browser = request.config.getoption("--browser")
     web_config = load_config(request.config.getoption("--target"))["web"]
     if fixture is None or not fixture.is_valid():
         # строка ниже инициализирует фикстуру eckb ее нет или она невалидна, происходит создание сессии
@@ -52,7 +52,7 @@ def stop(request):
     return fixture
 
 def pytest_addoption(parser):
-    parser.addoption("--browser", action="store", default="firefox")
+    parser.addoption("--browser", action="store", default="chrome")
     parser.addoption("--target", action="store", default="target.json")
     parser.addoption("--check_ui", action="store_true")
 

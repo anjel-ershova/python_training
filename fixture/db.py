@@ -1,5 +1,4 @@
-import mysql
-import pymysql.cursors
+import mysql.connector
 from model.model_group import Group
 from model.model_contact import Contact
 
@@ -11,8 +10,8 @@ class DbFixture:
         self.database = database
         self.user = user
         self.password = password
-        self.connection = pymysql.connect(host=host, database=database, user=user, password=password)
-        self.connection.autocommit(True)
+        self.connection = mysql.connector.connect(host=host, database=database, user=user, password=password)
+        self.connection.autocommit = True # должно снять кеширование бд, но не работает с pymysql.cursors
 
 
     def get_group_list(self):
@@ -27,6 +26,7 @@ class DbFixture:
             cursor.close()
         return list
 
+
     def destroy(self):
         self.connection.close()
 
@@ -34,10 +34,14 @@ class DbFixture:
         list = []
         cursor = self.connection.cursor()
         try:
-            cursor.execute("SELECT id, firstname, lastname, nickname, company, title, address, home, mobile, work, fax, email, email2, email3, address2, phone2, notes FROM addressbook WHERE deprecated='0000-00-00 00:00:00'")
+            cursor.execute("SELECT id, firstname, middlename, lastname, nickname, company, title, address, home, mobile, work, email, email2, email3, address2, phone2 from addressbook where deprecated = '0000-00-00 00:00:00'")
             for row in cursor:
-                (id, firstname, lastname, nickname, company, title, address, home, mobile, work, fax, email, email2, email3, address2, phone2, notes) = row
-                list.append(Contact(id=id, firstname2=firstname, lastname=lastname, nickname=nickname, company=company, title=title, address=address, home=home, mobile=mobile, work=work, fax=fax, email=email, email2=email2, email3=email3, address2=address2, phone2=phone2, notes=notes))
+                (id, firstname, middlename, lastname, nickname, company, title, address,
+                 home, mobile, work, email, email2, email3, address2, phone2) = row
+                list.append(Contact(id=str(id), firstname2=firstname, middlename=middlename, lastname=lastname,
+                                    nickname=nickname, title=title, company=company, address=address, home=home, mobile=mobile,
+                                    work=work, email=email, email2=email2, email3=email3, address2=address2,
+                                    phone2=phone2))
         finally:
             cursor.close()
         return list

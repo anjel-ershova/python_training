@@ -10,9 +10,12 @@ def test_delete_first_contact(app2, db, check_ui):
     old_contacts = db.get_contact_list()
     contact = random.choice(old_contacts)
     app2.contact.delete_contact_by_id(contact.id)
-    new_contacts = app2.contact.get_contact_list()
-    assert len(old_contacts) - 1 == len(new_contacts)
+    assert len(old_contacts) - 1 == app2.contact.count()
+    # и новый список берем из базы
+    new_contacts = db.get_contact_list()
     old_contacts.remove(contact)
+    #списки сравниваем
+    assert old_contacts == new_contacts
     if check_ui:
         assert sorted(new_contacts, key=Contact.id_or_max) == sorted(app2.contact.get_contact_list(), key=Contact.id_or_max)
 
