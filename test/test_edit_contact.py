@@ -10,20 +10,20 @@ def test_edit_contact(app2, db, check_ui):
                                     address2=None, phone2=None, notes=None))
     # берем из ui
     old_contacts = app2.contact.get_contact_list()
-    contact = random.choice(old_contacts)
-    new_contact_data = Contact(firstname2="new firstname1111", lastname="new lastname1111")
-    app2.contact.edit_contact_by_id(contact.id, new_contact_data)
-    # берем из базы
+    contact_N = random.choice(old_contacts)
+    new_contact_data = Contact(firstname2="new firstname0045676430", lastname="new lastname0")
+    app2.contact.edit_contact_by_id(contact_N.id, new_contact_data)
+    # берем из базы новый список
     new_contacts = db.get_contact_list()
-    assert len(old_contacts) == len(new_contacts)
+    # сравниваем длины списков бд и UI
+    assert len(old_contacts) == app2.contact.count()
+#    old_contacts.remove(contact_N)
+#    new_contacts.remove(new_contact_data)
+#    второй вариант выравнивания списков бд
+    old_contacts.remove(contact_N)
+    old_contacts.append(new_contact_data)
+    new_contact_data.id = str(contact_N.id)
+    # сравниваем 2 списка из базы
+    assert sorted(old_contacts, key=Contact.id_or_max) == sorted(new_contacts, key=Contact.id_or_max)
     if check_ui:
-        assert sorted(old_contacts, key=Contact.id_or_max) == sorted(new_contacts, key=Contact.id_or_max)
-
-#    # запоминаем id элемента, который будет видоизменен
-#    contact.id = old_contact_list[index].id
-#    # меняем значение поля
-#    app2.contact.edit_contact_by_index(index, contact)
-#    # присваиваем первому элементу старого списка то имя, на которое его меняли
-#    old_contact_list[index] = contact
-#    # сравниваем 2 списка старый с запомненным id и именем, замененным на новое и новый
-#    assert sorted(old_contact_list, key=Contact.id_or_max) == sorted(new_contact_list, key=Contact.id_or_max)
+        assert sorted(old_contacts, key=Contact.id_or_max) == sorted(app2.contact.get_contact_list(), key=Contact.id_or_max)
