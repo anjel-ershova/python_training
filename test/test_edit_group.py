@@ -9,16 +9,13 @@ def test_edit_group_name(app2, db, check_ui):
     # собираем старый список групп
     old_groups = db.get_group_list()
     group = random.choice(old_groups)
-#    # было: запоминаем id элемента, который будет видоизменен
-#    group.id = old_groups[index].id
-    new_group_data = Group(name="Newest group")
+    new_group_data = Group(name="WOW01")
     app2.group.edit_group_by_id(group.id, new_group_data)
     new_groups = db.get_group_list()
-#    # было: присваиваем первому элементу старого списка то имя, на которое его меняли
-#    old_groups[index] = group
-    assert len(old_groups) == len(new_groups)
-#   подумать, как правильно запоминать id группы, выбранной по id
-#   assert sorted(old_groups, key=Group.id_or_max) == sorted(new_groups, key=Group.id_or_max)
+    assert len(old_groups) == app2.group.count()
+    new_groups.remove(new_group_data)
+    old_groups.remove(group)
+    assert sorted(new_groups, key=Group.id_or_max) == sorted(old_groups, key=Group.id_or_max)
     if check_ui:
         assert sorted(new_groups, key=Group.id_or_max) == sorted(app2.group.get_group_list(), key=Group.id_or_max)
 

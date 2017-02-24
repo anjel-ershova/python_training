@@ -51,12 +51,6 @@ def stop(request):
     request.addfinalizer(fin)
     return fixture
 
-def pytest_addoption(parser):
-    parser.addoption("--browser", action="store", default="chrome")
-    parser.addoption("--target", action="store", default="target.json")
-    parser.addoption("--check_ui", action="store_true")
-
-
 def pytest_generate_tests(metafunc):
     for fixture in metafunc.fixturenames:
         if fixture.startswith("data_"):
@@ -80,3 +74,8 @@ def load_from_json(file):
 @pytest.fixture
 def check_ui(request):
     return request.config.getoption("--check_ui")
+
+def pytest_addoption(parser):
+    parser.addoption("--browser", action="store", default="chrome")
+    parser.addoption("--target", action="store", default="target.json")
+    parser.addoption("--check_ui", action="store_true")
