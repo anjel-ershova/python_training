@@ -6,7 +6,7 @@ def test_edit_group_name(app2, db, check_ui):
     # если число групп == 0, то делаем новую, чтобы ее можно было модифицировать
     if len(db.get_group_list()) == 0:
         app2.group.create(Group(name="Created name"))
-    # собираем старый список групп
+    # собираем старый список групп из бд
     old_groups = db.get_group_list()
     group = random.choice(old_groups)
     new_group_data = Group(id=group.id, name="WOW03", footer=None, header=None)
@@ -18,7 +18,6 @@ def test_edit_group_name(app2, db, check_ui):
     assert sorted(new_groups, key=Group.id_or_max) == sorted(old_groups, key=Group.id_or_max)
     if check_ui:
         newest_groups = db.get_group_list()
-        test_ui= sorted(app2.group.get_group_list(), key=Group.id_or_max) #для отладки - убрать
         assert sorted(newest_groups, key=Group.id_or_max) == sorted(app2.group.get_group_list(), key=Group.id_or_max)
 
 """
