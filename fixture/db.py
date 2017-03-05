@@ -21,7 +21,7 @@ class DbFixture:
             cursor.execute("SELECT group_id, group_name, group_header, group_footer FROM group_list")
             for row in cursor:
                 (id, name, header, footer) = row
-                list.append(Group(id=str(id), name=name, header=header, footer=footer))
+                list.append(Group(id=id, name=name, header=header, footer=footer))
         finally:
             cursor.close()
         return list
@@ -38,7 +38,7 @@ class DbFixture:
             for row in cursor:
                 (id, firstname, middlename, lastname, nickname, company, title, address,
                  home, mobile, work, email, email2, email3, address2, phone2) = row
-                list.append(Contact(id=str(id), firstname2=firstname, middlename=middlename, lastname=lastname,
+                list.append(Contact(id=id, firstname2=firstname, middlename=middlename, lastname=lastname,
                                     nickname=nickname, title=title, company=company, address=address, home=home, mobile=mobile,
                                     work=work, email=email, email2=email2, email3=email3, address2=address2,
                                     phone2=phone2))

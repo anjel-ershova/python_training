@@ -9,7 +9,7 @@ def test_edit_group_name(app2, db, check_ui):
     # собираем старый список групп
     old_groups = db.get_group_list()
     group = random.choice(old_groups)
-    new_group_data = Group(name="WOW01")
+    new_group_data = Group(id=group.id, name="WOW03", footer=None, header=None)
     app2.group.edit_group_by_id(group.id, new_group_data)
     new_groups = db.get_group_list()
     assert len(old_groups) == app2.group.count()
@@ -17,7 +17,9 @@ def test_edit_group_name(app2, db, check_ui):
     old_groups.remove(group)
     assert sorted(new_groups, key=Group.id_or_max) == sorted(old_groups, key=Group.id_or_max)
     if check_ui:
-        assert sorted(new_groups, key=Group.id_or_max) == sorted(app2.group.get_group_list(), key=Group.id_or_max)
+        newest_groups = db.get_group_list()
+        test_ui= sorted(app2.group.get_group_list(), key=Group.id_or_max) #для отладки - убрать
+        assert sorted(newest_groups, key=Group.id_or_max) == sorted(app2.group.get_group_list(), key=Group.id_or_max)
 
 """
 def test_edit_group_header(app2):
