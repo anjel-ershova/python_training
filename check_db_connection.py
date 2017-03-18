@@ -1,13 +1,24 @@
-import pymysql.cursors
-# есть еще другой вариант для пакета mysql.connector.connect: mysql.connector.connect()
+from fixture.db import DbFixture
 
-connection = pymysql.connect(host="127.0.0.1", database="addressbook", user="root", password="")
+db = DbFixture(host="127.0.0.1", database="addressbook", user="root", password="")
 
+"""
+# извлекаем список групп из БД
 try:
-    cursor = connection.cursor()
-    cursor.execute("select * from group_list")
-    for row in cursor.fetchall():
-        print(row)
+    groups = db.get_group_list()
+    for group in groups:
+        print(group)
+    print(len(groups))
 finally:
-    connection.close()
+    db.destroy()
+
+"""
+
+try: # извлекаем список контактов из БД
+    contacts = db.get_contact_list()
+    for contact in contacts:
+        print(contact)
+    print(len(contacts))
+finally:
+    db.destroy()
 
