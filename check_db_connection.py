@@ -1,6 +1,6 @@
-from fixture.db import DbFixture
+from fixture.orm import ORMFixture
 
-db = DbFixture(host="127.0.0.1", database="addressbook", user="root", password="")
+db = ORMFixture(host="127.0.0.1", database="addressbook", user="root", password="")
 
 """
 # извлекаем список групп из БД
@@ -10,7 +10,7 @@ try:
         print(group)
     print(len(groups))
 finally:
-    db.destroy()
+    pass #db.destroy() - orm автоматически закрывает соединение с БД
 
 """
 
@@ -20,5 +20,4 @@ try: # извлекаем список контактов из БД
         print(contact)
     print(len(contacts))
 finally:
-    db.destroy()
-
+    pass #db.destroy() - orm автоматически закрывает соединение с БД
