@@ -22,3 +22,7 @@ class NavigationHelper:
         wd = self.app.wd
         if not (wd.current_url.endswith("/group.php") and len(wd.find_elements_by_name("new")) > 0):
             wd.find_element_by_link_text("groups").click()
+
+    def go_to_target_group_by_id(self, id):
+        wd = self.app.wd
+        wd.get("http://localhost/addressbook/?group=%s" % id)

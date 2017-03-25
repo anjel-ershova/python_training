@@ -17,6 +17,7 @@ class ORMFixture:
         header = Optional(str, column='group_header')
         footer = Optional(str, column='group_footer')
         deprecated = Optional(datetime, column='deprecated')
+        contacts = Set(lambda: ORMFixture.ORMContact, table='address_in_groups', column='id', reverse='groups', lazy=True)
 
     class ORMContact(db.Entity):
         _table_ = 'addressbook'
@@ -37,6 +38,7 @@ class ORMFixture:
         address2 = Optional(str, column='address2')
         phone2 = Optional(str, column='phone2')
         deprecated = Optional(datetime, column='deprecated')
+        groups = Set(lambda: ORMFixture.ORMGroup, table='address_in_groups', column='group_id', reverse='contacts', lazy=True)
 
     def __init__(self, host, database, user, password):
         conv = encoders
@@ -45,7 +47,6 @@ class ORMFixture:
         self.db.bind('mysql', host=host, database=database, user=user, password=password, conv=conv)
         self.db.generate_mapping()
         sql_debug(True)
-
 
     def convert_groups_to_model(self, groups):
         def convert(group):
@@ -67,3 +68,16 @@ class ORMFixture:
     @db_session # второй вариант лечения ошибки db_session is required when working with the database
     def get_contact_list(self):
         return self.convert_contacts_to_model(select(c for c in ORMFixture.ORMContact if c.deprecated is None))
+
+    @db_session
+    def get_contacts_in_group(self, group):
+        orm_group = list(select(g for g in ORMFixture.ORMGroup if g.id == group.id))[0]
+        return self.convert_contacts_to_model(orm_group.contacts)
+
+    @db_session
+    def get_contacts_not_in_group(self, group):
+        orm_group = list(select(g for g in ORMFixture.ORMGroup if g.id == group.id))[0]
+        return self.convert_contacts_to_model(
+            select(c for c in ORMFixture.ORMContact if c.deprecated is None and orm_group not in c.groups))
+
+        return self.convert_contacts_to_model(orm_group.contacts)

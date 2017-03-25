@@ -3,7 +3,9 @@ from random import randint
 from random import choice
 from model.model_contact import *
 import re
-
+from fixture.orm import *
+from fixture.fixture_group import *
+import random
 
 
 class ContactHelper:
@@ -132,7 +134,7 @@ class ContactHelper:
 
     def delete_contact_by_id(self, id):
         wd = self.app.wd
-        self.app.navigation.open_home_page()
+#        self.app.navigation.open_home_page()
         self.select_contact_by_id(id)
         # submit deletion
         wd.find_element_by_xpath("//div[@id='content']/form[2]/div[2]/input").click()

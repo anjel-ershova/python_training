@@ -1,4 +1,5 @@
 from model.model_group import Group
+import random
 
 class GroupHelper:
     def __init__(self, app):
@@ -70,6 +71,28 @@ class GroupHelper:
         wd.find_element_by_name("update").click()
         self.return_to_groups_page()
         self.group_cache = None
+
+    def select_some_group_to_add(self, target_group):
+        wd = self.app.wd
+        # открыть выпадающий список
+        to_group = wd.find_element_by_name("to_group")
+        to_group.click()
+        # выбор произвольной группы по value
+        to_group.find_element_by_css_selector("[value='%s']" % target_group.id).click()
+        wd.find_element_by_name("add").click()
+
+    def select_some_group_to_view(self, target_group):
+        wd = self.app.wd
+        # открыть выпадающий список
+        view_group = wd.find_element_by_name("group")
+        view_group.click()
+        # выбор произвольной группы по value
+        view_group.find_element_by_css_selector("[value='%s']" % target_group.id).click()
+
+#    def click_add_contact_to_group_button(self):
+ #       wd = self.app.wd
+ #       wd.find_element_by_name("add").click()
+    #        self.app.navigation.open_home_page()
 
     def delete_first_group(self):
         wd = self.app.wd
