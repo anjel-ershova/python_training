@@ -72,7 +72,7 @@ class GroupHelper:
         self.return_to_groups_page()
         self.group_cache = None
 
-    def select_some_group_to_add(self, target_group):
+    def add_selected_contact_to_selected_group_by_id(self, target_group):
         wd = self.app.wd
         # открыть выпадающий список
         to_group = wd.find_element_by_name("to_group")

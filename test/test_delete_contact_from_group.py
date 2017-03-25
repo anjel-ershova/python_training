@@ -4,37 +4,36 @@ import random
 from fixture.orm import *
 
 
-def test_delete_contact_to_group(app2, db):
+def test_delete_contact_to_group(app2, db, orm):
     #проверка на пустой список групп
-    if len(db.get_group_list()) == 0:
-        app2.group.create(Group(name="Created name", footer="Created footer", header="Created header"))
-
-    # открываем страницу home
-    app2.navigation.open_home_page()
+    if len(orm.get_group_list()) == 0:
+        app2.group.create(Group(name="Created name_ORM_D", footer="Created footer_ORM_D", header="Created header_ORM_D"))
     # выбираем любую группу, переходим к ней
-    active_groups = db.get_group_list()
+    active_groups = orm.get_group_list()
     target_group = random.choice(active_groups)
     app2.group.select_some_group_to_view(target_group)
-    old_contacts = app2.contact.get_contact_list()
+    # смотрим, сколько контактов в группе
+    old_contacts = orm.get_contacts_in_group(target_group)
     # проверка на пустой список контактов
-    if len(old_contacts) == 0:
+    if len(old_contacts) != 0:
+        contact = random.choice(old_contacts)
+        app2.contact.select_contact_by_id(contact.id)
+        # удаляем выбранный контакт
+        app2.contact.delete_selected_contact_in_group_page()
+    else:
         app2.contact.create(
-            Contact(firstname2="firstname-created", middlename="middlename-created", lastname="lastname-created",
+            Contact(firstname2="firstname-created_ORM_D", middlename="middlename-created_ORM_D", lastname="lastname-created",
                     nickname="nickname-created", title="title-created",
                     company="company-created", address="address-created", home='home-created', mobile='mobile-created',
                     work='work-created', fax='fax-created',
                     email='email-created@mfsa.ru', email2='email2-created@mfsa.ru', email3='email3-created@mfsa.ru',
                     address2='Another address-created', phone2='home_secondary-created', notes='Some text-created'))
         app2.contact.select_contact_by_index(0)
-        app2.group.select_some_group_to_add(target_group)
-    # перейти к странице конкретной группы
+        # удаляем выбранный контакт
+        app2.group.add_selected_contact_to_selected_group_by_id(target_group)
     app2.navigation.go_to_target_group_by_id(target_group.id)
-    # выбираем любой контакт из конкретной группы
-    contact = random.choice(old_contacts)
-    app2.contact.select_contact_by_id(contact.id)
-    # если нет контакта, добавляем его
-
-    # удаляем контакт
-    app2.contact.delete_contact_by_id(contact.id)
+    # собираем новый список контактов этой группы
+    new_contacts = orm.get_contacts_in_group(target_group)
+    old_contacts.remove(contact)
     # проверка, что список после удаления контакта совпадает с списком ??? каким
-    pass
+    assert sorted(new_contacts, key=Group.id_or_max) == sorted(old_contacts, key=Group.id_or_max)

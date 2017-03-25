@@ -48,10 +48,6 @@ def orm(request):
     db_config = load_config(request.config.getoption("--target"))["db"]
     orm_fixture = ORMFixture(host=db_config["host"], database=db_config["database"],
                              user=db_config["user"], password=db_config["password"])
-
-#    def fin():
-#        orm_fixture.destroy()
-#    request.addfinalizer(fin)
     return orm_fixture
 
 @pytest.fixture(scope="session", autouse=True) #autouse=True - атрибут, который принудительно заставляет фикстуру разрушиться в конце всех тестов
