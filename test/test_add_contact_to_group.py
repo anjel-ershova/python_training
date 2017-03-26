@@ -15,7 +15,7 @@ def test_add_contact_to_group(app2, db, orm):
         app2.group.create(Group(name="Created name_orm", footer="Created footer_orm", header="Created header_orm"))
         app2.navigation.open_home_page()
     # выбор произвольной группы из дропдауна
-    all_groups = db.get_group_list()
+    all_groups = orm.get_group_list()
     target_group = random.choice(all_groups)
     # выбрать любой контакт, который не входит в группы
     contacts_not_in_group = orm.get_contacts_not_in_group(target_group)

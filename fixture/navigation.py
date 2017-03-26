@@ -1,3 +1,8 @@
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.wait import WebDriverWait
+
+
 class NavigationHelper:
     def __init__(self, app):
         self.app = app
@@ -26,3 +31,14 @@ class NavigationHelper:
     def go_to_target_group_by_id(self, id):
         wd = self.app.wd
         wd.get("http://localhost/addressbook/?group=%s" % id)
+
+    def go_to_target_group_by_id_v2(self, id, text):
+        wd = self.app.wd
+        wd.get("http://localhost/addressbook/?group=%s" % id)
+        wait = WebDriverWait(wd, 2)
+        wait.until(EC.text_to_be_present_in_element((By.CSS_SELECTOR, 'div.msgbox'), text))
+
+    def wait(self, time):
+        wd = self.app.wd
+        wd.implicitly_wait(time)
+
